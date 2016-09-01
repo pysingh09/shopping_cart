@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+  
+    <title>{% block title %} some data {% endblock %}</title>
+     <script type = "text/javascript" src = "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js" ></script>
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+      <script src="{% static 'js/alertify.min.js' %}"></script>
+      <link rel="stylesheet" href="{% static 'js/alertify.core.css' %}" />
+      <link rel="stylesheet" href="{% static 'js/alertify.default.css' %}" />
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+</head>
+
+<body>
+{% block main %}{% endblock %}
+<a href="/accounts/logout/?next=/accounts/login/">
+      <button style="float: right;" >Log Out</button> 
+       </a>
+         <a class="" href="{% url 'viewcart' %}">
+          <div class="image">
+           <img src="{% static "images/cart.png"%}" style="float: right;" width="128" height="128" align="center">
+          </div>
+       </a>
+       
+{% block push %}{% endblock %}
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
+<html>
+<head>
+ 
+ 

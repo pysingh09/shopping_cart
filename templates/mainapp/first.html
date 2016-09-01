@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ t }}{% endblock %}
+{% block content %}
+{% load static %}
+  <script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('735ee33c81685610f676', {
+      encrypted: true
+    });
+
+    var channel = pusher.subscribe('test_channel');
+    channel.bind('my_event', function(data) {
+        var div = document.getElementById('one');
+var refrence=data.message.replace(/("|')/g, "");
+$('#one').prepend("<a href=/"+refrence+"><img src='https://www.wired.com/wp-content/uploads/2015/09/google-logo.jpg' width='128' height='128'><h3>"+refrence+"</h3></a>");
+    });
+  </script>
+  <div id='one'>
+{% for x in ref %}
+{% if to_ref %}
+
+  
+    <a href="{% url 'product' %}?id={{ x }}">
+  
+    <img src="{% static photo.next %}" alt="Mountain View" width="128" height="128" align="center">
+    <h3>{{ x }}</h3>
+    </a>
+
+{% else %}
+
+      <a href="{% url 'sub_cat' %}?id={{ x }}">
+
+      <img src="{% static photo.next %}" alt="Mountain View" width="128" height="128" align="center">
+      <h3>{{ x }}</h3>
+  
+      </a>
+{% endif %}
+</br>
+{% endfor %}
+</div>
+{% endblock %}

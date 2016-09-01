@@ -1,0 +1,16 @@
+<style type="text/css">
+
+.image { 
+  position: relative; 
+  width: 100%; /* for IE 6 */
+  left: 1120px;
+  float: right;
+  top:30px;
+}
+.header {
+    font-size: 120%;
+    color: blue;
+    top: 0px;
+    text-align: center;
+}
+   </style>

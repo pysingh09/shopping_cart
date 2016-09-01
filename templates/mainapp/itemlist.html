@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ t }}{% endblock %}
+{% block content %}
+{% if ref %}
+     {% for x in ref %}
+      <img src="{% static photo.next %}" alt="Mountain View" width="128" height="128" align="center">
+      <h3>{{ x }}</h3>
+      <h3>Price : {{ p.next }}</h3>
+      
+      <button onclick="javascript:fun('{{ x }}')">Add to Cart</button> 
+      
+</br>
+{% endfor %}
+{% else %}
+<p>no Items</p>
+{% endif %}
+
+<p id="demo"></p>
+
+<script>
+
+ function fun(data){
+         $.ajax({
+         url: 'addtocart?id='+data.toString(),
+         type: 'get',
+         success: function(data) {
+                   alertify.alert(data);
+            },
+        failure: function(data) { 
+                  alert('Got an error dude');
+            }
+     });
+}
+</script>
+{% endblock %}
