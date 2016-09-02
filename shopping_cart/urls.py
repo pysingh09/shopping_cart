@@ -9,6 +9,6 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^home/', include('mainapp.urls')),
-    url(r'^$', RedirectView.as_view(url='/accounts/login')),
+    url(r'^$', RedirectView.as_view(url='/accounts/login'),name="login"),
 
 ] 

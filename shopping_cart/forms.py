@@ -4,8 +4,8 @@ from calendar import monthrange
 from django import forms
 
 class CreditCardField(forms.IntegerField):
+    
     def clean(self, value):
-        print value
         return super(CreditCardField, self).clean(value)
  
 class CCExpWidget(forms.MultiWidget):

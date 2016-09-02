@@ -1,29 +1,59 @@
-{% extends "base.html" %}
+{% extends "mainapp/base.html" %}
 {% block title %}{{ t }}{% endblock %}
 {% block content %}
 {% load static %}
-<ul>
+<table>
+  <caption>Items In Cart</caption>
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Remove</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+   
   {% for x in cart %}
-    <li>
-      <img src="{% static image.next %}" alt="Mountain View" width="80" height="80" align="center">
-      <h5>{{ x }}</h5>
-      <h6>Price:{{ price.next }}</h6>
-      <a href="{% url 'del' %}?id={{ x }}"> <img src="{% static 'shopping_cart/cancel.png' %}" width="30" height="30"></a>
-    </li>
+     <tr>
+      <td>  <img src="{% static image.next %}" alt="Mountain View" width="30" height="30" align="center"></td>
+      <td>{{ x }}</td>
+      <td><img src="{% static 'shopping_cart/cancel.png' %}" onclick="javascript:fun('{{ x }}')" width="30" height="30"></a>
+</td>
+      <td>{{ price.next }}</td>
+    </tr>
+      
   {% endfor %}
-</ul>
-
-<h3>Total={{ total }}</h3>
+</tbody>
+<tfoot>
+    <tr>
+      <th colspan="3">Grand Total</th>
+      <th>{{ total }}</th>
+    </tr>
+  </tfoot>
+</table>
  <a href="{% url 'charge'%}?id={{ total }}">
       <button style="float: center;" onclick="">Charge Me!</button> 
        </a>
        <script type="text/javascript">
-       	window.onpageshow = function(event) {
-if (event.persisted) {
+ function fun(data){
+  alertify.confirm("Remove Item From Cart ?", function (e) {
+    if (e) {
+
+         $.ajax({
+         url: 'del?id='+data.toString(),
+         type: 'get',
+          complete: function () {
+               window.location.reload() 
+          },
+     });
+         
+    } 
     window.location.reload() 
-    }
-};
-       </script>
+});
+}
+
+</script>
 
 
 {% endblock %}

@@ -28,20 +28,18 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mainapp',
-    'django_render_partial',
-    # The Django sites framework is required
     'django.contrib.sites',
+    'mainapp',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
 ]
 
 SITE_ID = 1

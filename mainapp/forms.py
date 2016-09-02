@@ -21,9 +21,11 @@ class SignupForm(forms.Form):
 class SalePaymentForm(forms.Form):
     number = CreditCardField(required=True, label="Card Number")
     expiration = CCExpField(required=True, label="Expiration")
+    amount=0
     cvc = forms.IntegerField(required=True, label="CCV Number",
                     max_value=9999, widget=forms.TextInput(attrs={'size': '4'}))
-    amount=5000
+    
+
 
     def clean(self):
         cleaned = super(SalePaymentForm, self).clean()
@@ -34,6 +36,7 @@ class SalePaymentForm(forms.Form):
             exp_year = self.cleaned_data["expiration"].year
             cvc = self.cleaned_data["cvc"]
             sale = Sale()
+            print self.amount
             success, instance = sale.charge(int(float(self.amount)), number, exp_month,
                                                 exp_year, cvc)
             if not success:

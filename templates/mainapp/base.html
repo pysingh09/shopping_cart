@@ -11,10 +11,17 @@
       <link rel="stylesheet" href="{% static 'js/alertify.default.css' %}" />
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
-</head>
-
-<body>
-{% block main %}{% endblock %}
+<link rel="stylesheet" type="text/css" href="{% static 'style/style.css' %}">
+<div class="form-wrapper">
+    <input type="text" id="search" placeholder="Search for..." required>
+    <button onclick="javascript:funcall()">Submit</button> 
+</div>
+<script type="text/javascript">
+  function funcall(){
+var a= document.getElementById("search").value;
+window.location = "/home/logic/?id="+a;
+  }
+</script>
 <a href="/accounts/logout/?next=/accounts/login/">
       <button style="float: right;" >Log Out</button> 
        </a>
@@ -23,6 +30,13 @@
            <img src="{% static "images/cart.png"%}" style="float: right;" width="128" height="128" align="center">
           </div>
        </a>
+
+</head>
+
+<body>
+
+{% block main %}{% endblock %}
+
        
 {% block push %}{% endblock %}
     <div id="content">
