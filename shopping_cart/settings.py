@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-AUTH_PROFILE_MODULE = 'mainapp.Profile'
+AUTH_PROFILE_MODULE = 'mainapp.MyUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

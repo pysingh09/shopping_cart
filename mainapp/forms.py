@@ -2,9 +2,9 @@ from calendar import monthrange
 from datetime import date, datetime
  
 from django import forms
-from django.contrib.auth.models import User
+
  
-from mainapp.models import Sale
+from mainapp.models import Sale, MyUser
 from shopping_cart.forms import  CCExpWidget, CCExpField
 
 
@@ -14,12 +14,12 @@ class SignupForm(forms.Form):
     mobile = forms.CharField(max_length=50, label='Mobile')
 
     def signup(self, request, user):
+        user = MyUser()
         user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']        
+        user.last_name = self.cleaned_data['last_name'] 
+        user.mobile_number = self.cleaned_data['mobile']       
         user.save()
         
- 
-
 class SalePaymentForm(forms.Form):
     number = forms.IntegerField(required=True, label="Card Number")
     expiration = CCExpField(required=True, label="Expiration")

@@ -20,7 +20,7 @@ class RemoveItem(View):
     def get(self,request):
         name=request.GET['id']
         if name in request.session['cart']:
-            del request.session['cart'][name]
+            request.session['cart'].remove(name)
             request.session['cart'] = request.session['cart']
         else:
             return HttpResponse("Failed!")
@@ -94,7 +94,6 @@ class Logic(View):
                         photo.append("shopping_cart/"+itemobj.photo.name)
                         '''getting  Tags releted to each itmes'''
                         tags_on_item.append(tag_finder(itemobj.id))
-
             price = iter(pricelist)
             photo = iter(photo)
             tags_on_item=iter(tags_on_item)
@@ -113,7 +112,7 @@ cart = login_required(Cart.as_view())
 class ViewCart(View):
 
     def get(self,request):
-        cart = request.session.get('cart', {})
+        cart = request.session.get('cart', [])
         price,image = [],[]
         total = 0.0
         for item in cart:
@@ -132,8 +131,8 @@ class AddCart(View):
     
     def get(self,request):
         item_name = request.GET['id']
-        cart = request.session.get('cart', {})
-        cart[item_name] = item_name
+        cart = request.session.get('cart', [])
+        cart.append(item_name)
         request.session['cart'] = cart
         return HttpResponse("Added Sucessfully!")
 
@@ -144,6 +143,7 @@ def charge(request):
         form = SalePaymentForm(request.POST)
         form.amount = request.GET['id']
         if form.is_valid():
+            request.session['cart'] = ""
             return redirect("/accounts/login/")
     else:
         form = SalePaymentForm()

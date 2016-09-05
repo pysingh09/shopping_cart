@@ -52,7 +52,6 @@ class CCExpField(forms.MultiValueField):
                 raise forms.ValidationError(error)
             year = int(data_list[1])
             month = int(data_list[0])
-            # find last day of the month
             day = monthrange(year, month)[1]
             return date(year, month, day)
         return None
