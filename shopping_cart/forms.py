@@ -2,14 +2,9 @@ from datetime import date, datetime
 from calendar import monthrange
  
 from django import forms
-
-class CreditCardField(forms.IntegerField):
-    
-    def clean(self, value):
-        return super(CreditCardField, self).clean(value)
  
 class CCExpWidget(forms.MultiWidget):
-    """ Widget containing two select boxes for selecting the month and year"""
+    
     def decompress(self, value):
         return [value.month, value.year] if value else [None, None]
  

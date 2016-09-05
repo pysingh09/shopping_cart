@@ -1,12 +1,9 @@
-from __future__ import unicode_literals
-
+import stripe
 from django.db import models
-from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 
 from shopping_cart import settings
-
-import stripe
-
 
 class Item(models.Model):
     item_name = models.CharField(max_length = 300, unique = True)
@@ -17,6 +14,19 @@ class Item(models.Model):
     def __str__(self):
         return self.item_name
 
+class Profile (models.Model):
+    user = models.OneToOneField(User)  
+    mobile = models.CharField(max_length = 300, unique = True)
+
+    def __str__(self):  
+          return "%s's profile" % self.user  
+
+def create_user_profile(sender, instance, created, **kwargs):  
+    if created:  
+       profile, created = UserProfile.objects.get_or_create(user=instance)  
+
+post_save.connect(create_user_profile, sender=User) 
+
 class Category(models.Model):
     name = models.CharField(max_length=200,unique=True)
     photo = models.ImageField(default="default.jpg")
@@ -24,7 +34,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
         
-class Sub_Cat(models.Model):
+class SubCategory(models.Model):
     p_id = models.ForeignKey(Category,on_delete=models.CASCADE)
     name = models.CharField(max_length=200,unique=True)
     image = models.ImageField(default="default.jpg")
@@ -43,35 +53,16 @@ class ItemTag(models.Model):
     tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
 class Sale(models.Model):
+    charge_id = models.CharField(max_length=32)
 
     def __init__(self, *args, **kwargs):
         super(Sale, self).__init__(*args, **kwargs)
- 
-        # bring in stripe, and get the api key from settings.py
-        
         stripe.api_key = settings.STRIPE_API_KEY
- 
         self.stripe = stripe
  
-    # store the stripe charge id for this sale
-    charge_id = models.CharField(max_length=32)
- 
-    # you could also store other information about the sale
-    # but I'll leave that to you!
- 
     def charge(self, price_in_cents, number, exp_month, exp_year, cvc):
-        """
-        Takes a the price and credit card details: number, exp_month,
-        exp_year, cvc.
- 
-        Returns a tuple: (Boolean, Class) where the boolean is if
-        the charge was successful, and the class is response (or error)
-        instance.
-        """
- 
-        if self.charge_id: # don't let this be charged twice!
+        if self.charge_id:
             return False, Exception(message="Already charged.")
- 
         try:
             response = self.stripe.Charge.create(
                 amount = price_in_cents,
@@ -80,20 +71,11 @@ class Sale(models.Model):
                     "number" : number,
                     "exp_month" : exp_month,
                     "exp_year" : exp_year,
-                    "cvc" : cvc,
- 
-                    #### it is recommended to include the address!
-                    #"address_line1" : self.address1,
-                    #"address_line2" : self.address2,
-                    #"daddress_zip" : self.zip_code,
-                    #"address_state" : self.state,
+                    "cvc" : cvc
                 },
                 description='Thank you for your purchase!')
- 
             self.charge_id = response.id
- 
+
         except self.stripe.CardError, ce:
-            # charge failed
             return False, ce
- 
         return True, response

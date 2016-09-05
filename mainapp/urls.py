@@ -11,6 +11,6 @@ urlpatterns = [
     url(r'^add_cart/', views.addcart, name="add"),
     url(r'^charge/$', views.charge, name="charge"),
     url(r'^cat/', views.categorylist, name="cat"),
-    url(r'^profile/', views.mainpage),
+    url(r'^profile/', views.mainpage, name="home"),
     url(r'^product/', views.allproduct, name="sub_cat"),
 ]

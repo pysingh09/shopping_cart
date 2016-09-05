@@ -6,8 +6,8 @@
      {% for x in ref %}
       <img src="{% static photo.next %}" alt="Mountain View" width="128" height="128" align="center">
       <h3>{{ x }}</h3>
-      <h3>Price : {{ p.next }}</h3>
-      
+      <h4>Price : {{ p.next }}</h4>
+      <h5>Tag :{{ tags.next }}</h5>
       <button onclick="javascript:fun('{{ x }}')">Add to Cart</button> 
       
 </br>
