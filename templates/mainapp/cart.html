@@ -1,7 +1,28 @@
 {% extends "mainapp/base.html" %}
-{% block title %}{{ t }}{% endblock %}
+{% block title %}Cart{% endblock %}
 {% block content %}
 {% load static %}
+<script type="text/javascript">
+      function fun(data){
+      alertify.confirm("Remove Item From Cart ?", function (e) {
+      if (e) {
+          $.ajax({
+          url: 'del?id='+data.toString(),
+          type: 'get',
+          success: function(data) {
+            },
+          failure: function(data) { 
+                  alert('Got an error dude');
+            },
+          complete: function () {
+          window.location.reload() 
+             },
+     });
+
+}
+})
+}
+</script>
 <table>
   <caption>Items In Cart</caption>
   <thead>
@@ -9,6 +30,7 @@
       <th>Image</th>
       <th>Name</th>
       <th>Remove</th>
+      <th>Quantity</th>
       <th>Price</th>
     </tr>
   </thead>
@@ -20,6 +42,7 @@
       <td>{{ x }}</td>
       <td><img src="{% static 'shopping_cart/cancel.png' %}" onclick="javascript:fun('{{ x }}')" width="30" height="30"></a>
       </td>
+      <td>{{ count.next }}</td>
       <td>{{ price.next }}</td>
       </tr>
       
@@ -28,28 +51,16 @@
 
 <tfoot>
     <tr>
-      <th colspan="3">Grand Total</th>
+      <th colspan="4">Grand Total</th>
       <th>{{ total }}</th>
     </tr>
 </tfoot>
 </table>
     </br>
-     <a href="{% url 'charge'%}?id={{ total }}">
-        <button style="float: center;" onclick="">Charge Me!</button> 
-     </a>
-       <script type="text/javascript">
-          function fun(data){
-            alertify.confirm("Remove Item From Cart ?", function (e) {
-              if (e) {
-                  $.ajax({
-                  url: 'del?id='+data.toString(),
-                  type: 'get',
-                  complete: function () {
-                      window.location.reload() 
-                    },});
-                } 
-window.location.reload() 
-});
-}
-</script>
+     
+  {% if total > 0 %}
+    <a href="{% url 'charge'%}?id={{ total }}">
+        <button  onclick="">Charge Me!</button> 
+    </a>
+  {% endif %}  
 {% endblock %}

@@ -3,8 +3,7 @@ from datetime import date, datetime
  
 from django import forms
 
- 
-from mainapp.models import Sale, MyUser
+from mainapp.models import Sale
 from shopping_cart.forms import  CCExpWidget, CCExpField
 
 
@@ -14,7 +13,6 @@ class SignupForm(forms.Form):
     mobile = forms.CharField(max_length=50, label='Mobile')
 
     def signup(self, request, user):
-        user = MyUser()
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name'] 
         user.mobile_number = self.cleaned_data['mobile']       
@@ -27,7 +25,6 @@ class SalePaymentForm(forms.Form):
     cvc = forms.IntegerField(required=True, label="CCV Number",
                     max_value=9999, widget=forms.TextInput(attrs={'size': '4'}))
 
-    
     def clean(self):
         cleaned = super(SalePaymentForm, self).clean()
  

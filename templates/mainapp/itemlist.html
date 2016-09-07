@@ -1,10 +1,11 @@
 {% extends "mainapp/base.html" %}
 {% load static %}
-{% block title %}{{ t }}{% endblock %}
+{% block title %}Product{% endblock %}
 {% block content %}
 {% if ref %}
      {% for x in ref %}
       <img src="{% static photo.next %}" alt="Mountain View" width="128" height="128" align="center">
+      <span class="badge">{{ count.next }}</span>
       <h3>{{ x }}</h3>
       <h4>Price : {{ p.next }}</h4>
       <h5>Tag :{{ tags.next }}</h5>
@@ -25,12 +26,20 @@
          url: 'addtocart?id='+data.toString(),
          type: 'get',
          success: function(data) {
-                   alertify.alert(data);
-            },
-        failure: function(data) { 
+          alertify.success("Successfully added !");
+          var millisecondsToWait = 2000;
+          setTimeout(function() {
+          window.location.reload() 
+          }, millisecondsToWait);       
+          },
+          failure: function(data) { 
                   alert('Got an error dude');
-            }
-     });
+            },
+          complete: function () {
+                      
+                    },
+            });
+
 }
 </script>
 {% endblock %}
