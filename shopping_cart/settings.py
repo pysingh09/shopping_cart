@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'w7ma^kr5qunh1oshalo8c1pt1au5btqecz*(6u^h2-twb8%y-r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -57,13 +57,13 @@ MIDDLEWARE = [
 
 ]
 
-ADMINS=(('piyush', 'piyushsingh.love@gmail.com'),)
+ADMINS = (('piyush', 'piyushsingh.love@gmail.com'),)
 
-LOGIN_REDIRECT_URL='/home/profile/'
+LOGIN_REDIRECT_URL = '/home/profile/'
 
-LOGOUT_URL='/home/profile/'
+LOGOUT_URL = '/home/profile/'
 
-ACCOUNT_LOGOUT_ON_GET=True
+ACCOUNT_LOGOUT_ON_GET = True
 
 ROOT_URLCONF = 'shopping_cart.urls'
 
@@ -157,7 +157,7 @@ MEDIA_URL = 'http://127.0.0.1:8000/shopping_cart/'
 
 STATIC_URL = '/static/'
 
-STRIPE_API_KEY="sk_test_OAMsZwvfhfyXNSf9brohbunV"
+STRIPE_API_KEY = "sk_test_OAMsZwvfhfyXNSf9brohbunV"
 
 # STATIC_ROOT = "/home/dmota/Desktop/shopping_cart/newenv/shopping_cart/static/"
 

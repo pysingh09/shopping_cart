@@ -38,12 +38,12 @@
    
   {% for x in cart %}
      <tr>
-      <td>  <img src="{% static image.next %}" alt="Mountain View" width="30" height="30" align="center"></td>
-      <td>{{ x }}</td>
-      <td><img src="{% static 'shopping_cart/cancel.png' %}" onclick="javascript:fun('{{ x }}')" width="30" height="30"></a>
+      <td>  <img src="{% static x|lookup:x.image %}" alt="Mountain View" width="30" height="30" align="center"></td>
+      <td>{{ x|lookup:x.name }}</td>
+      <td><img src="{% static 'shopping_cart/cancel.png' %}" onclick="javascript:fun('{{ x|lookup:x.name }}')" width="30" height="30"></a>
       </td>
-      <td>{{ count.next }}</td>
-      <td>{{ price.next }}</td>
+      <td>{{ x|lookup:x.count }}</td>
+      <td>{{ x|lookup:x.price }}</td>
       </tr>
       
   {% endfor %}

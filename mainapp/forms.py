@@ -16,7 +16,6 @@ class SignupForm(forms.Form):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name'] 
         user.mobile_number = self.cleaned_data['mobile']       
-        user.save()
         
 class SalePaymentForm(forms.Form):
     number = forms.IntegerField(required=True, label="Card Number")

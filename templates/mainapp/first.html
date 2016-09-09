@@ -23,18 +23,18 @@ $('#one').prepend("<a href=/"+refrence+"><img src='https://www.wired.com/wp-cont
 {% if to_ref %}
 
   
-    <a href="{% url 'product' %}?id={{ x }}">
+    <a href="{% url 'product' %}?id={{ x|lookup:x.name }}">
   
-    <img src="{% static photo.next %}" alt="Mountain View" width="128" height="128" align="center">
-    <h3>{{ x }}</h3>
+    <img src="{% static x|lookup:x.image %}" alt="Mountain View" width="128" height="128" align="center">
+    <h3>{{ x|lookup:x.name }}</h3>
     </a>
 
 {% else %}
 
-      <a href="{% url 'sub_cat' %}?id={{ x }}">
+      <a href="{% url 'sub_cat' %}?id={{ x|lookup:x.name }}">
 
-      <img src="{% static photo.next %}" alt="Mountain View" width="128" height="128" align="center">
-      <h3>{{ x }}</h3>
+      <img src="{% static x|lookup:x.image %}" alt="Mountain View" width="128" height="128" align="center">
+      <h3>{{ x|lookup:x.name }}</h3>
   
       </a>
 {% endif %}

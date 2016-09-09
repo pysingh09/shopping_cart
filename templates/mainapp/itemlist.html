@@ -4,13 +4,17 @@
 {% block content %}
 {% if ref %}
      {% for x in ref %}
-      <img src="{% static photo.next %}" alt="Mountain View" width="128" height="128" align="center">
-      <span class="badge">{{ count.next }}</span>
-      <h3>{{ x }}</h3>
-      <h4>Price : {{ p.next }}</h4>
-      <h5>Tag :{{ tags.next }}</h5>
-      <button onclick="javascript:fun('{{ x }}')">Add to Cart</button> 
-      
+      <img src="{% static x|lookup:x.image %}" alt="Mountain View" width="128" height="128" align="center">
+     
+      <h3>{{ x|lookup:x.name }}</h3>
+    
+      <h4>Price : {{ x|lookup:x.price }}</h4>
+      <h5>Tag :{{ x|lookup:x.tag }}</h5>
+      <button onclick="javascript:fun('{{ x|lookup:x.name }}')">Add to Cart</button> 
+      {% if x|lookup:x.quantity > 0 %}
+      <span class="badge">{{ x|lookup:x.quantity|slugify }}</span>
+      <button onclick="javascript:fun1('{{ x|lookup:x.name }}')">Remove From Cart</button> 
+      {% endif %}
 </br>
 {% endfor %}
 {% else %}
@@ -20,6 +24,27 @@
 <p id="demo"></p>
 
 <script>
+function fun1(data){
+         $.ajax({
+         url: 'removetocart?id='+data.toString(),
+         type: 'get',
+         success: function(data) {
+          alertify.success("Successfully added !");
+          var millisecondsToWait = 2000;
+          setTimeout(function() {
+          window.location.reload() 
+          }, millisecondsToWait);       
+          },
+          failure: function(data) { 
+                  alert('Got an error dude');
+            },
+          complete: function () {
+                      
+                    },
+            });
+
+}
+
 
  function fun(data){
          $.ajax({

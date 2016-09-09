@@ -21,8 +21,8 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, mobile_number, password):
-        u = self.create_user(username,
+    def create_superuser(self, email, mobile_number, password):
+        u = self.create_user(email,
                         password=password,
                         mobile_number=mobile_number
                     )
@@ -32,6 +32,7 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser):
+    username = models.CharField(max_length=50, default="none")
     email = models.EmailField(
                         verbose_name='email address',
                         max_length=255,
@@ -72,7 +73,7 @@ class MyUser(AbstractBaseUser):
         return self.is_admin
 
 class Item(models.Model):
-    item_name = models.CharField(max_length = 300, unique = True)
+    item_name = models.CharField(max_length=300, unique=True)
     price = models.FloatField()
     quantity = models.IntegerField()
     photo = models.ImageField(default = "default.jpg")
@@ -80,23 +81,32 @@ class Item(models.Model):
     def __str__(self):
         return self.item_name
 
+    def tag_finder(self, item_id):
+        itemtagobj = ItemTag.objects.filter(item_id=item_id)
+        tags=""
+        for tag in itemtagobj:
+            tagobj = Tag.objects.get(id = tag.tag_id.id)
+            tags += tagobj.tag_title+" "
+        return tags
+
+
 class Category(models.Model):
-    name = models.CharField(max_length=200,unique=True)
+    name = models.CharField(max_length=200, unique=True)
     photo = models.ImageField(default="default.jpg")
 
     def __str__(self):
         return self.name
         
 class SubCategory(models.Model):
-    categoryid = models.ForeignKey(Category,on_delete=models.CASCADE)
-    name = models.CharField(max_length=200,unique=True)
+    categoryid = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, unique=True)
     image = models.ImageField(default="default.jpg")
 
     def __str__(self):
         return self.name
 
 class Tag(models.Model):
-    tag_title = models.CharField(max_length=300,unique=True)
+    tag_title = models.CharField(max_length=300, unique=True)
 
     def __str__(self):
         return self.tag_title

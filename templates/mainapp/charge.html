@@ -1,10 +1,8 @@
-<html>
-<head>
-  <title>Stripe Example</title>
-</head>
-<body>
- 
-<div class="wrapper">
+{% extends "mainapp/base.html" %}
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
  
   {% for key, value in form.errors.items %}
       <p>{{ value }}</p>
@@ -32,6 +30,4 @@
   </form>
  
 </div>
- 
-</body>
-</html>
+{% endblock %}
