@@ -1,0 +1,22 @@
+{% extends "mainapp/base.html" %}
+{% block title %}History{% endblock %}
+{% block content %}
+<table>
+  <caption>History</caption>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for item in data %}
+<tr>
+      <td> {{ item|lookup:item.name }} </td>
+      <td>{{ item|lookup:item.quantity }}</td>
+      <td> {{ item|lookup:item.date }}</td>
+      </tr>
+
+{% endfor %}
+{% endblock %}

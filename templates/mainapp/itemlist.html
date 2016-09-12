@@ -1,11 +1,12 @@
 {% extends "mainapp/base.html" %}
 {% load static %}
+{% load account %}
 {% block title %}Product{% endblock %}
 {% block content %}
 {% if ref %}
      {% for x in ref %}
       <img src="{% static x|lookup:x.image %}" alt="Mountain View" width="128" height="128" align="center">
-     
+     <button id="img" onclick="javascript:favonclick('{{ x|lookup:x.name }}','{% user_display user %}')">Add to Fav</button>
       <h3>{{ x|lookup:x.name }}</h3>
     
       <h4>Price : {{ x|lookup:x.price }}</h4>
@@ -24,6 +25,23 @@
 <p id="demo"></p>
 
 <script>
+function favonclick(data,uname)
+{
+ $.ajax({
+         url: 'addtofav?iname='+data.toString()+'&uname='+uname.toString(),
+         type: 'get',
+         success: function(data) {
+          alertify.success("Successfully added !");  
+          },
+          failure: function(data) { 
+                  alert('Got an error dude');
+            },
+          complete: function () {
+                      
+                    },
+            });
+}
+
 function fun1(data){
          $.ajax({
          url: 'removetocart?id='+data.toString(),

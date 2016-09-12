@@ -1,6 +1,7 @@
 {% extends "mainapp/base.html" %}
 {% block title %}Cart{% endblock %}
 {% block content %}
+{% load account %}
 {% load static %}
 <script type="text/javascript">
       function fun(data){
@@ -59,7 +60,7 @@
     </br>
      
   {% if total > 0 %}
-    <a href="{% url 'charge'%}?id={{ total }}">
+    <a href="{% url 'charge'%}?id={{ total }}&uname={% user_display user %}">
         <button  onclick="">Charge Me!</button> 
     </a>
   {% endif %}  

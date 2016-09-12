@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{% load account %}
 {% load static %}
 <title>{% block title %} some data {% endblock %}</title>
 
 <ul>
   <li><a href="{% url 'home' %}">Home</a></li>
- 
+  <li><a href="{% url 'history' %}?id={% user_display user %}">History</a></li>
   <a href="/accounts/logout/?next=/accounts/login/">
   <button class="button_logout" >Log Out</button> 
   </a>
@@ -21,7 +22,6 @@
 <script src="{% static 'js/alertify.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'js/alertify.core.css' %}" />
 <link rel="stylesheet" href="{% static 'js/alertify.default.css' %}" />
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'style/style.css' %}">
     <div class="form-wrapper">
       <form action="javascript:funcall()">

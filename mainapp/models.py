@@ -1,11 +1,23 @@
-import stripe
+from datetime import datetime  
 
+import stripe
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 from shopping_cart import settings
+
+
+class Favorite(models.Model):
+    username = models.CharField(max_length=100)
+    item_name = models.CharField(max_length=100)
+
+class History(models.Model):
+    username = models.CharField(max_length=100)
+    item_name = models.CharField(max_length=300,default='none')
+    quantity = models.IntegerField()
+    date = models.DateTimeField(default=datetime.now)
 
 
 class MyUserManager(BaseUserManager):

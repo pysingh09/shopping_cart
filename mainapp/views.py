@@ -13,7 +13,43 @@ from django.contrib.auth.decorators import login_required
 from mainapp import constants
 from mainapp.models import Sale,Category
 from mainapp.forms import SalePaymentForm
-from mainapp.models import Tag,ItemTag,Item,SubCategory
+from mainapp.models import Tag,ItemTag,Item,SubCategory,History
+
+from dal import autocomplete
+
+
+class HistoryData(View):
+    def get(self,request):
+        uname = request.GET['id']
+        obj = History.objects.filter(username__exact=uname)
+        details =[]
+        for item in obj:
+            details.append({'name':item.item_name,'quantity':item.quantity,'date':item.date})
+
+        return render(request, 'mainapp/history.html', {'data':details})
+
+historyData = login_required(HistoryData.as_view())
+
+
+class Add_Fav(View):
+    def get(self,request):
+        uname = request.GET['uname']
+        item_name = request.GET['iname']
+        return HttpResponse("Added Sucessfully!")
+
+addtofav = login_required(Add_Fav.as_view())
+
+
+class ItemAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Item.objects.all()
+
+        if self.q:
+            qs = qs.filter(item_name__istartswith=self.q)
+
+        return qs
+
+itemauto = login_required(ItemAutocomplete.as_view())
 
 
 class RemoveItem(View):
@@ -84,19 +120,21 @@ class Logic(View):
 
 logic = login_required(Logic.as_view())
 
-
-class ViewCart(View):
-    def get(self,request):
+def cartdetails(request):
         cart = request.session.get('cart', [])
         quantity = request.session.get('quantity', {})
         data, count = [],{}
         total = 0.0
         for item in cart:
             itemobj= Item.objects.get(item_name__exact=item)
-            data.append({'count':quantity[itemobj.item_name],'name':itemobj.item_name,'price':str(itemobj.price * quantity[itemobj.item_name]),'image':'shopping_cart/'+itemobj.photo.name})
+            data.append({'count':quantity[itemobj.item_name],'name':itemobj.item_name,'price':str(itemobj.price),'image':'shopping_cart/'+itemobj.photo.name})
             total += itemobj.price * quantity[itemobj.item_name]
         context = {'cart':data, 'total':total}
-        return render(request, "mainapp/cart.html", context)
+        return context
+
+class ViewCart(View):
+    def get(self,request):
+        return render(request, "mainapp/cart.html", cartdetails(request))
 
 viewCart = login_required(ViewCart.as_view())
 
@@ -145,6 +183,15 @@ def charge(request):
         form = SalePaymentForm(request.POST)
         form.amount = request.GET['id']
         if form.is_valid():
+            data = cartdetails(request)
+            for item in data['cart']:
+                history = History()
+                print item
+                history.username = request.GET['uname']
+                history.item_name = item['name']
+                history.quantity = int(item['count'])
+                history.save()
+
             request.session['cart'] = ""
             return redirect("/accounts/login/")
     else:
